@@ -10,8 +10,8 @@ def get_cotigory_by_id(db: Session, cotigory_id: int):
     return db.query(Cotigory).filter(Cotigory.id == cotigory_id).first()
 
 
-def create_cotigory(db: Session, cotigory: CotigorySchema):
-    _cotigory = Cotigory(name=cotigory.name, description=cotigory.description)
+def create_cotigory(db: Session, name: str,status: bool, description: str ):
+    _cotigory = Cotigory(name=name, status=status, description=description)
     db.add(_cotigory)
     db.commit()
     db.refresh(_cotigory)
@@ -24,11 +24,12 @@ def remove_cotigory(db: Session, cotigory_id: int):
     db.commit()
 
 
+def update_cotigory(db: Session, cotigory_id: int, name: str, status: int, description: str):
+    _cotigory = get_cotigory_by_id(db=db, cotigory_id=cotigory_id)
 
-def update_cotigory(db: Session, cotigory_id: int, name: str, description: str):
-    _cotigory= get_cotigory_by_id(db=db, cotigory_id=cotigory_id)
-
-    _cotigory.id = id
+    _cotigory.name = name
+    _cotigory.status = status
+    _cotigory.description = description
 
     db.commit()
     db.refresh(_cotigory)
